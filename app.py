@@ -167,7 +167,8 @@ def create_segments(path, expected, mode):
                 "duracao_s": round(end - start, 2),
             })
     return segments
-   def cut_clip(path, start_s, end_s, out_path):
+
+def cut_clip(path, start_s, end_s, out_path):
     start_s = max(0, start_s)
     duration = end_s - start_s
 
@@ -175,7 +176,6 @@ def create_segments(path, expected, mode):
     os.system(cmd)
 
     return out_path
-
 def extract_frames_b64(path, n):
     cap = cv2.VideoCapture(path)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
