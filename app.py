@@ -167,29 +167,15 @@ def create_segments(path, expected, mode):
                 "duracao_s": round(end - start, 2),
             })
     return segments
+    def cut_clip(path, start_s, end_s, out_path):
+    import os
 
+    start_s = max(0, start_s)
+    duration = end_s - start_s
 
-def cut_clip(path, start_s, end_s, out_path):
-    cap = cv2.VideoCapture(path)
-    fps, total, duration, width, height = get_video_info(path)
-    start_s = max(0.0, start_s)
-    end_s = min(duration, end_s)
-    if end_s <= start_s:
-        end_s = min(duration, start_s + 3)
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    writer = cv2.VideoWriter(out_path, fourcc, fps, (width, height))
-    start_frame = int(start_s * fps)
-    end_frame = int(end_s * fps)
-    cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
-    current = start_frame
-    while current <= end_frame:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        writer.write(frame)
-        current += 1
-    cap.release()
-    writer.release()
+    cmd = f'ffmpeg -y -ss {start_s} -i "{path}" -t {duration} -c:v libx264 -c:a aac "{out_path}"'
+    os.system(cmd)
+
     return out_path
 
 
