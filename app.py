@@ -168,15 +168,13 @@ def create_segments(path, expected, mode):
             })
     return segments
     def cut_clip(path, start_s, end_s, out_path):
-        import os
+    start_s = max(0, start_s)
+    duration = end_s - start_s
 
-        start_s = max(0, start_s)
-        duration = end_s - start_s
+    cmd = f'ffmpeg -y -ss {start_s} -i "{path}" -t {duration} -c:v libx264 -c:a aac "{out_path}"'
+    os.system(cmd)
 
-        cmd = f'ffmpeg -y -ss {start_s} -i "{path}" -t {duration} -c:v libx264 -c:a aac "{out_path}"'
-        os.system(cmd)
-
-        return out_path
+    return out_path
 
 
 def extract_frames_b64(path, n):
