@@ -223,7 +223,7 @@ Critérios:
     for img in imgs:
         content.append({"type": "input_image", "image_url": img})
     try:
-        resp = client.responses.create(model=model, input=[{"role": "user", "content": content}])
+        resp = client.responses.create(model="gpt-4o-mini", input=[{"role": "user", "content": content}])
         txt = resp.output_text.strip().replace("```json", "").replace("```", "").strip()
         return json.loads(txt)
     except Exception as e:
